@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0D1B2A;
+  --foreground: #F5F5F7;
+  --primary: #C8963E;
+  --primary-dark: #A0753A;
+  --secondary: #1A2F45;
+  --accent: #C8963E;
+  --text-light: #B0B0B0;
+  --border: #2A3D52;
+  --card-bg: #112233;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Alef", "Arial", sans-serif;
+  line-height: 1.6;
+}
+
+/* Hebrew text optimization */
+html[lang="he"] body {
+  font-family: "Alef", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+  text-align: right;
+}
+
+/* Smooth transitions */
+button, a, [role="button"] {
+  transition: all 0.3s ease;
+}
+
+/* Premium styling */
+.premium-gradient {
+  background: linear-gradient(135deg, #0D1B2A 0%, #112233 100%);
+}
+
+.gold-accent {
+  color: #C8963E;
+}
+
+.gold-border {
+  border-color: #C8963E;
+}
+
+.gold-bg {
+  background-color: #C8963E;
+}
+
+/* Hover effects */
+.hover-gold:hover {
+  color: #C8963E;
+  box-shadow: 0 0 20px rgba(200, 150, 62, 0.3);
+}
+
+/* Star rating styles */
+.star {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+.star.filled {
+  color: #C8963E;
+}
+
+.star.empty {
+  color: #3A4F64;
+}
