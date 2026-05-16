@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Home as HomeIcon, RefreshCw, Building2 } from 'lucide-react';
 
 export default function Home() {
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -9,6 +10,34 @@ export default function Home() {
   const [loanAmount, setLoanAmount] = useState(500000);
   const [loanTerm, setLoanTerm] = useState(20);
   const [interestRate, setInterestRate] = useState(5.5);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalAdvisorName, setModalAdvisorName] = useState<string | null>(null);
+  const [formName, setFormName] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formMessage, setFormMessage] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const openModal = (advisorName?: string) => {
+    setModalAdvisorName(advisorName ?? null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsSubmitted(false);
+    setFormName('');
+    setFormPhone('');
+    setFormMessage('');
+    setModalAdvisorName(null);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => {
+      closeModal();
+    }, 3000);
+  };
 
   const regions = [
     'תל אביב',
@@ -203,6 +232,11 @@ export default function Home() {
               </a>
             </li>
             <li>
+              <a href="#calculator" className="text-gray-300 hover:text-[#C8963E] font-medium transition">
+                מחשבון
+              </a>
+            </li>
+            <li>
               <a href="#testimonials" className="text-gray-300 hover:text-[#C8963E] font-medium transition">
                 ביקורות
               </a>
@@ -217,51 +251,76 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-24 px-6 text-center relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
+      <section className="min-h-screen pt-2 pb-8 px-6 text-center relative overflow-hidden flex flex-col items-center md:pt-0 md:pb-0 md:justify-center">
+        {/* Blurred background image layer */}
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-40"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #C8963E 0%, transparent 45%), radial-gradient(circle at 75% 75%, #1A4F8A 0%, transparent 45%), radial-gradient(circle at 50% 50%, #2A1F4A 0%, transparent 60%), linear-gradient(135deg, #0D1B2A, #112233)`
+          }}
+        ></div>
+
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/85 via-[#0D1B2A]/75 to-[#0D1B2A]/95"></div>
+
+        {/* Decorative blobs */}
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 right-20 w-40 h-40 bg-[#C8963E] rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 left-10 w-60 h-60 bg-[#C8963E] rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
         </div>
 
-        <div className="max-w-5xl mx-auto relative z-10 animate-fadeIn">
-          <h1 className="text-7xl font-bold text-white mb-6 leading-tight">
-            הדרך החכמה למצוא
-            <span className="block text-[#C8963E] mt-2"> יועץ משכנתאות</span>
+        <div className="max-w-4xl mx-auto relative z-10 animate-fadeIn w-full flex flex-col items-center">
+          {/* Main heading — two lines */}
+          <h1 className="text-center mb-6 leading-tight max-w-3xl mx-auto">
+            <span className="block text-4xl md:text-8xl font-black text-white text-center">הדרך החכמה למצוא</span>
+            <span className="block text-4xl md:text-8xl font-black text-[#C8963E] text-center mt-2">יועץ משכנתאות</span>
           </h1>
-          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-            פלטפורמה פרמיום לבחירת יועצי משכנתאות מומחים. השוו, בחרו וחסכו בתנאים הטובים ביותר
+
+          {/* Tagline */}
+          <p className="text-base md:text-2xl text-gray-300 text-center mt-4 mb-12 max-w-3xl mx-auto leading-relaxed">
+            השווה, בחר וחסוך אלפי שקלים
           </p>
-          <div className="flex gap-4 justify-center flex-wrap mb-12">
-            <div className="flex items-center gap-3 bg-[#112233]/60 px-6 py-3 rounded-lg backdrop-blur border border-[#C8963E]/30 transition-all duration-300 hover:border-[#C8963E]/60 hover:bg-[#112233]/80">
-              <span className="text-2xl">⭐</span>
-              <div className="text-right">
-                <div className="font-semibold text-white">+2,500</div>
-                <div className="text-xs text-gray-400">ביקורות מאומתות</div>
-              </div>
+
+          {/* Specialty selection cards — vertical on mobile, horizontal row on md+ */}
+          <div className="w-full px-4 flex flex-col items-center gap-4 mt-4 mb-6 md:flex-row md:gap-6 md:mt-8 md:mb-10 md:px-0">
+            {[
+              { label: 'משכנתא חדשה', Icon: HomeIcon, value: 'משכנתאות ראשונות' },
+              { label: 'מחזור משכנתא', Icon: RefreshCw, value: 'מיסוג משכנתאות' },
+              { label: 'הלוואה כנגד נכס', Icon: Building2, value: 'השקעות נדלן' },
+            ].map((opt) => {
+              const Icon = opt.Icon;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    setSelectedSpecialty(opt.value);
+                    document.getElementById('advisors')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-6 px-5 flex items-center gap-3 rounded-xl bg-white/10 border border-white/20 hover:border-[#C8963E] hover:bg-[#C8963E]/20 transition-all duration-300 cursor-pointer md:w-64 md:h-52 md:py-8 md:px-4 md:flex-col md:justify-center md:items-center md:gap-4 md:rounded-2xl"
+                >
+                  <Icon className="text-[#C8963E] shrink-0 w-8 h-8 md:w-14 md:h-14" />
+                  <span className="text-lg font-bold text-white md:text-xl md:text-center md:mt-2">{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Statistics — each in its own centered column */}
+          <div className="w-full px-4 flex flex-wrap justify-center items-center gap-4 max-w-3xl mx-auto text-center mt-12 md:mt-16 md:px-0 md:gap-8">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="text-lg md:text-4xl font-black text-white text-center">+2,500</div>
+              <div className="text-xs md:text-base text-gray-400 text-center mt-1">ביקורות מאומתות</div>
             </div>
-            <div className="flex items-center gap-3 bg-[#112233]/60 px-6 py-3 rounded-lg backdrop-blur border border-[#C8963E]/30 transition-all duration-300 hover:border-[#C8963E]/60 hover:bg-[#112233]/80">
-              <span className="text-2xl">👥</span>
-              <div className="text-right">
-                <div className="font-semibold text-white">150+</div>
-                <div className="text-xs text-gray-400">יועצים מובחרים</div>
-              </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="text-lg md:text-4xl font-black text-white text-center">150+</div>
+              <div className="text-xs md:text-base text-gray-400 text-center mt-1">יועצים מובחרים</div>
             </div>
-            <div className="flex items-center gap-3 bg-[#112233]/60 px-6 py-3 rounded-lg backdrop-blur border border-[#C8963E]/30 transition-all duration-300 hover:border-[#C8963E]/60 hover:bg-[#112233]/80">
-              <span className="text-2xl">💰</span>
-              <div className="text-right">
-                <div className="font-semibold text-white">₪45,000</div>
-                <div className="text-xs text-gray-400">חסכון ממוצע</div>
-              </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="text-lg md:text-4xl font-black text-white text-center">₪45,000</div>
+              <div className="text-xs md:text-base text-gray-400 text-center mt-1">חסכון ממוצע</div>
             </div>
           </div>
-          <div className="mb-16"></div>
-          <button
-            onClick={scrollToSearch}
-            className="bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] px-10 py-4 rounded-xl font-bold text-xl hover:shadow-2xl hover:shadow-[#C8963E]/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-[#C8963E]/40 mt-8"
-          >
-            מצא יועץ עכשיו →
-          </button>
         </div>
 
         <style>{`
@@ -285,15 +344,15 @@ export default function Home() {
       <div className="h-px bg-gradient-to-r from-transparent via-[#C8963E]/40 to-transparent"></div>
 
       {/* Search and Filter Section */}
-      <section id="search" className="py-16 px-6 bg-gradient-to-b from-transparent to-[#112233]/30">
-        <div className="max-w-6xl mx-auto text-center">
+      <section id="search" className="py-20 bg-gradient-to-b from-transparent to-[#112233]/30">
+        <div className="w-full max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold text-white mb-12 text-center">
             חפשו וסננו יועצים
           </h2>
 
-          <div className="bg-[#112233]/40 rounded-2xl backdrop-blur border border-[#C8963E]/30 p-8 shadow-2xl transition-all duration-300 hover:border-[#C8963E]/50">
+          <div className="w-full bg-[#112233]/30 rounded-2xl backdrop-blur-xl border border-[#C8963E]/25 p-8 shadow-2xl transition-all duration-300 hover:border-[#C8963E]/50">
             {/* Search Bar */}
-            <div className="mb-8">
+            <div className="w-full mb-8">
               <input
                 type="text"
                 placeholder="חפשו לפי שם או תחום התמחות..."
@@ -304,8 +363,8 @@ export default function Home() {
             </div>
 
             {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-right">
-              <div className="text-right">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-right">
+              <div className="w-full text-right">
                 <label className="block text-gray-200 font-semibold mb-3 text-right">אזור:</label>
                 <select
                   value={selectedRegion}
@@ -320,7 +379,7 @@ export default function Home() {
                   ))}
                 </select>
               </div>
-              <div className="text-right">
+              <div className="w-full text-right">
                 <label className="block text-gray-200 font-semibold mb-3 text-right">תחום התמחות:</label>
                 <select
                   value={selectedSpecialty}
@@ -338,7 +397,7 @@ export default function Home() {
             </div>
 
             {/* Results Count */}
-            <div className="text-center text-gray-300">
+            <div className="w-full text-center text-gray-300">
               נמצאו <span className="font-bold text-[#C8963E]">{filteredAdvisors.length}</span> יועצים
             </div>
           </div>
@@ -349,18 +408,18 @@ export default function Home() {
       <div className="h-px bg-gradient-to-r from-transparent via-[#C8963E]/40 to-transparent"></div>
 
       {/* Advisors Grid */}
-      <section className="py-16 px-6 bg-gradient-to-b from-[#112233]/30 to-transparent">
-        <div className="max-w-6xl mx-auto text-center">
+      <section id="advisors" className="py-20 px-4 bg-gradient-to-b from-[#112233]/30 to-transparent">
+        <div className="max-w-6xl mx-auto px-4 text-center">
           {filteredAdvisors.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto place-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
               {filteredAdvisors.map((advisor) => (
                 <div
                   key={advisor.id}
-                  className="group bg-gradient-to-b from-[#112233]/60 to-[#0A0F1A]/60 backdrop-blur border border-[#C8963E]/20 rounded-xl shadow-2xl hover:border-[#C8963E]/60 hover:shadow-2xl hover:shadow-[#C8963E]/20 transition-all duration-300 overflow-hidden hover:scale-105 w-full max-w-sm text-right min-w-0"
+                  className="group flex flex-col items-center text-center w-full max-w-sm mx-auto min-w-0 p-6 bg-gradient-to-b from-[#112233]/60 to-[#0A0F1A]/60 backdrop-blur border border-[#C8963E]/20 border-t-2 border-t-transparent rounded-xl shadow-xl overflow-hidden hover:border-[#C8963E]/60 hover:border-t-2 hover:border-t-[#C8963E] hover:scale-105 hover:shadow-2xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(200,150,62,0.35)]"
                   dir="rtl"
                 >
                   {/* Card Header with Image */}
-                  <div className="bg-gradient-to-r from-[#1A2F45] to-[#0D1B2A] p-6 text-center border-b border-[#C8963E]/20 relative">
+                  <div className="w-full bg-gradient-to-r from-[#1A2F45] to-[#0D1B2A] py-5 px-2 text-center border-b border-[#C8963E]/20 relative rounded-lg">
                     {/* Verification Badge */}
                     <div className="absolute top-3 left-3 flex items-center gap-1 bg-green-600/20 text-green-400 px-2 py-1 rounded-full text-xs font-semibold border border-green-500/40 flex-row-reverse">
                       <span>✓</span>
@@ -368,7 +427,7 @@ export default function Home() {
                     </div>
 
                     {/* Avatar */}
-                    <div className="flex justify-center mb-3">
+                    <div className="flex justify-center w-full mb-4">
                       <div
                         className="w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg"
                         style={{ backgroundColor: advisor.avatar }}
@@ -380,7 +439,7 @@ export default function Home() {
                   </div>
 
                   {/* Card Content */}
-                  <div className="p-6 text-right">
+                  <div className="w-full pt-5 text-right">
                     {/* Expertise Chips */}
                     <div className="mb-4 flex flex-wrap gap-2 justify-center">
                       {advisor.specialties.map((specialty, idx) => (
@@ -395,13 +454,13 @@ export default function Home() {
 
                     {/* Experience and Transactions */}
                     <div className="mb-4 bg-[#0D1B2A]/40 rounded-lg p-3 space-y-2 border border-[#C8963E]/10">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-semibold text-[#C8963E]">{advisor.experience} שנים</span>
-                        <span className="text-gray-300">📅 ניסיון:</span>
+                      <div className="flex justify-between w-full px-2 items-center text-sm">
+                        <span className="font-semibold text-[#C8963E] text-sm">{advisor.experience} שנים</span>
+                        <span className="text-gray-300 text-sm">📅 ניסיון:</span>
                       </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-semibold text-[#C8963E]">{advisor.transactions}+</span>
-                        <span className="text-gray-300">✅ עסקאות:</span>
+                      <div className="flex justify-between w-full px-2 items-center text-sm">
+                        <span className="font-semibold text-[#C8963E] text-sm">{advisor.transactions}+</span>
+                        <span className="text-gray-300 text-sm">✅ עסקאות:</span>
                       </div>
                     </div>
 
@@ -422,7 +481,10 @@ export default function Home() {
                     </div>
 
                     {/* Action Button */}
-                    <button className="w-full bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] py-3 rounded-lg hover:shadow-lg hover:shadow-[#C8963E]/50 font-bold transition-all duration-300 hover:scale-105 shadow-md shadow-[#C8963E]/30">
+                    <button
+                      onClick={() => openModal(advisor.name)}
+                      className="w-full bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] py-3 rounded-lg hover:shadow-lg hover:shadow-[#C8963E]/50 font-bold transition-all duration-300 hover:scale-105 shadow-md shadow-[#C8963E]/30"
+                    >
                       בקשו ייעוץ חינם
                     </button>
                   </div>
@@ -447,7 +509,7 @@ export default function Home() {
       <div className="h-px bg-gradient-to-r from-transparent via-[#C8963E]/40 to-transparent"></div>
 
       {/* Mortgage Calculator Section */}
-      <section className="py-20 px-6 bg-[#112233]/40">
+      <section id="calculator" className="py-20 px-6 bg-[#112233]/40">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white mb-4 text-center">
@@ -623,9 +685,12 @@ export default function Home() {
           <p className="text-lg text-gray-300 mb-10 text-center">
             בקשו ייעוץ חינם כיום וקבלו הצעות מהיועצים הטובים ביותר בתחום שלכם
           </p>
-          <button className="bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] px-12 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-[#C8963E]/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-[#C8963E]/40">
-            התחילו עכשיו
-          </button>
+          <div className="relative inline-block">
+            <span className="absolute -inset-1 rounded-2xl border-2 border-[#C8963E] animate-pulse pointer-events-none"></span>
+            <button className="relative bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] py-4 px-10 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-[#C8963E]/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-[#C8963E]/40">
+              התחילו עכשיו
+            </button>
+          </div>
         </div>
       </section>
 
@@ -721,6 +786,93 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Consultation Request Modal */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn"
+          onClick={closeModal}
+          dir="rtl"
+        >
+          <div
+            className="relative w-full max-w-md bg-gradient-to-b from-[#1A2F45] to-[#0D1B2A] border border-[#C8963E]/40 rounded-2xl shadow-2xl shadow-[#C8963E]/20 p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              aria-label="סגירה"
+              className="absolute top-4 left-4 w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-[#C8963E] hover:bg-[#C8963E]/10 transition-all duration-300 text-2xl leading-none"
+            >
+              ×
+            </button>
+
+            {isSubmitted ? (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">✅</div>
+                <h3 className="text-2xl font-bold text-[#C8963E] mb-3">תודה רבה!</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  פנייתכם התקבלה בהצלחה.<br />
+                  נחזור אליכם בהקדם האפשרי.
+                </p>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold text-white mb-2 text-right">בקשו ייעוץ חינם</h3>
+                <p className="text-gray-400 mb-6 text-right text-sm">
+                  {modalAdvisorName
+                    ? `מילאו את הפרטים ו${modalAdvisorName} יחזור אליכם בהקדם`
+                    : 'מילאו את הפרטים והיועץ יחזור אליכם בהקדם'}
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-4 text-right">
+                  <div>
+                    <label className="block text-gray-200 font-semibold mb-2 text-sm">שם מלא</label>
+                    <input
+                      type="text"
+                      required
+                      value={formName}
+                      onChange={(e) => setFormName(e.target.value)}
+                      className="w-full px-4 py-3 bg-[#0D1B2A] border border-[#C8963E]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C8963E] text-right text-white placeholder-gray-500 transition-all duration-300"
+                      placeholder="ישראל ישראלי"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-200 font-semibold mb-2 text-sm">טלפון</label>
+                    <input
+                      type="tel"
+                      required
+                      value={formPhone}
+                      onChange={(e) => setFormPhone(e.target.value)}
+                      className="w-full px-4 py-3 bg-[#0D1B2A] border border-[#C8963E]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C8963E] text-right text-white placeholder-gray-500 transition-all duration-300"
+                      placeholder="050-0000000"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-200 font-semibold mb-2 text-sm">הודעה חופשית</label>
+                    <textarea
+                      rows={4}
+                      value={formMessage}
+                      onChange={(e) => setFormMessage(e.target.value)}
+                      className="w-full px-4 py-3 bg-[#0D1B2A] border border-[#C8963E]/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C8963E] text-right text-white placeholder-gray-500 transition-all duration-300 resize-none"
+                      placeholder="ספרו לנו על הצרכים שלכם..."
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-[#C8963E] to-[#D4A857] text-[#0D1B2A] py-3 rounded-lg hover:shadow-lg hover:shadow-[#C8963E]/50 font-bold transition-all duration-300 hover:scale-105 shadow-md shadow-[#C8963E]/30 mt-2"
+                  >
+                    שלח פנייה
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
