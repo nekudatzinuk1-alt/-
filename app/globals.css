@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0D1B2A;
-  --foreground: #F5F5F7;
+  --background: #FAF8F3;
+  --foreground: #1A1A1A;
   --primary: #C8963E;
-  --primary-dark: #A0753A;
-  --secondary: #1A2F45;
+  --primary-dark: #B0832E;
+  --secondary: #FFFFFF;
   --accent: #C8963E;
-  --text-light: #B0B0B0;
-  --border: #2A3D52;
-  --card-bg: #112233;
+  --text-light: #999999;
+  --border: rgba(0, 0, 0, 0.06);
+  --card-bg: #FFFFFF;
 }
 
 @theme inline {
@@ -19,12 +19,27 @@
   --color-secondary: var(--secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-brand-bg: #FAF8F3;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-dark: #1A1A1A;
+  --color-brand-text: #1A1A1A;
+  --color-brand-text-muted: #666666;
+  --color-brand-text-light: #999999;
+  --color-brand-gold: #C8963E;
+  --color-brand-gold-dark: #B0832E;
+  --color-brand-gold-soft: rgba(200, 150, 62, 0.08);
+  --color-brand-gold-glow: rgba(200, 150, 62, 0.18);
+  --color-brand-border: rgba(0, 0, 0, 0.06);
+  --color-brand-border-gold: rgba(200, 150, 62, 0.3);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 html {
@@ -57,7 +72,7 @@ button, a, [role="button"] {
 
 /* Premium styling */
 .premium-gradient {
-  background: linear-gradient(135deg, #0D1B2A 0%, #112233 100%);
+  background: linear-gradient(135deg, #FAF8F3 0%, #FFFFFF 100%);
 }
 
 .gold-accent {
@@ -90,7 +105,7 @@ button, a, [role="button"] {
 }
 
 .star.empty {
-  color: #3A4F64;
+  color: #D8D8D8;
 }
 
 /* Subtle pulsing border for CTA emphasis (gentler than default animate-pulse) */
@@ -115,11 +130,11 @@ button, a, [role="button"] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0D1B2A;
+  background: #FAF8F3;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #C8963E, #A0753A);
+  background: linear-gradient(180deg, #C8963E, #B0832E);
   border-radius: 5px;
 }
 

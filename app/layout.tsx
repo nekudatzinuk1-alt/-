@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "יועץ בקליק - פלטפורמת השוואת יועצי משכנתאות",
-  description: "חפשו וקבלו השוואה של יועצי משכנתאות מומלצים",
+  title: "יועץ בקליק - המומחים למשכנתאות",
+  description: "פלטפורמת ייעוץ מקצועי למשכנתאות - השוואה, ייעוץ וחיסכון",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       dir="rtl"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-brand-bg text-brand-text">{children}</body>
     </html>
   );
 }
